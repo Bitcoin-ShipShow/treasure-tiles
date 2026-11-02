@@ -73,7 +73,7 @@ test("a full round over the relay: join, wrong turn, guess, duplicate, forged, t
     assert.ok(ok, msg);
     assert.match(msg, /^aboard: /);
   }
-  await host("settings", { tileEverySeconds: 0, letterEverySeconds: 0, countdownSeconds: 0 });
+  await host("settings", { tileEverySeconds: 0, letterEverySeconds: 0, countdownSeconds: 0, preFallen: 0.12 });
   await host("new", { puzzleId: "pizza" });
   await host("start");
   await new Promise((r) => setTimeout(r, 400));
