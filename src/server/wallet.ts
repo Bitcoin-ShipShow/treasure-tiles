@@ -16,6 +16,8 @@ export class Wallet {
   private client: NWCClient | null = null;
   private file: string;
   alias = "";
+  /** The wallet's own Lightning address (send sats here to fund it), if the connection says. */
+  address = "";
 
   constructor(dataDir: string) {
     this.file = join(dataDir, "wallet-nwc.txt");
@@ -35,6 +37,7 @@ export class Wallet {
     this.client?.close();
     this.client = client;
     this.alias = [info.alias, info.network].filter(Boolean).join(" · ");
+    this.address = client.lud16 ?? "";
     if (save) writeFileSync(this.file, url, { mode: 0o600 });
   }
 
@@ -42,6 +45,7 @@ export class Wallet {
     this.client?.close();
     this.client = null;
     this.alias = "";
+    this.address = "";
     rmSync(this.file, { force: true });
   }
 

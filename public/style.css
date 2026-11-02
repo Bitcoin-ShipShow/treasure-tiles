@@ -1049,3 +1049,5 @@ body.board-page[data-phase="open"] .bb-this, body.board-page[data-phase="paused"
 .last-call[hidden] { display: none; }
 .last-call b { font: 900 clamp(90px, 28vw, 200px)/1 "Arial Black", Arial, sans-serif; color: #fff; text-shadow: 0 0 8px #000, 6px 6px 0 #b00; animation: cd-pop .9s ease-out both; }
 .last-call span { font: 900 clamp(20px, 6vw, 40px)/1.1 "Arial Black", Arial, sans-serif; color: #ffd23f; text-shadow: 0 0 6px #000, 3px 3px 0 #000; padding: 0 .4em; animation: sign-pulse .5s ease-in-out infinite; }
+.wallet-fund { background: rgba(74, 222, 128, .1); border: 2px solid #4ade80; border-radius: 8px; padding: 8px 10px; }
+.wallet-fund code { font-size: 1.05em; user-select: all; }

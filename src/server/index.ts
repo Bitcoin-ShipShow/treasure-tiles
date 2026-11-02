@@ -234,7 +234,7 @@ app.get(
   }),
 );
 
-app.get("/api/host/state", host(async () => ({ ...game.secrets(), connections: relay.connections, bots: bots.count, wallet: { connected: wallet.connected, alias: wallet.alias, balance: await wallet.balance() } })));
+app.get("/api/host/state", host(async () => ({ ...game.secrets(), connections: relay.connections, bots: bots.count, wallet: { connected: wallet.connected, alias: wallet.alias, address: wallet.address, balance: await wallet.balance() } })));
 app.post("/api/host/wallet", host(async (req) => {
   const url = String(req.body?.url ?? "").trim();
   if (!url) return wallet.disconnect();

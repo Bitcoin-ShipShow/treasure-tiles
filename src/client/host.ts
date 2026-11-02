@@ -14,7 +14,7 @@ interface Secrets {
   connections: number;
   bots: number;
   payouts: { pk: string; name: string; sats: number; address: string | null; status: string | null; error: string | null }[];
-  wallet: { connected: boolean; alias: string; balance: number | null };
+  wallet: { connected: boolean; alias: string; address: string; balance: number | null };
 }
 
 const TOKEN = "treasure-tiles.host";
@@ -25,6 +25,8 @@ try {
   /* fine */
 }
 let secrets: Secrets | null = null;
+/** The host asked to connect a different wallet (shows the connect box while one is connected). */
+let wantChange = false;
 let settingsDirty = false;
 
 async function api(path: string, body?: unknown) {
@@ -94,6 +96,11 @@ async function loadSecrets() {
     <p class="small muted"><b>Picture prompt:</b> ${esc(secrets!.imagePrompt)}</p>`;
   $("#conns").textContent = `${secrets!.connections} connected · ${secrets!.bots} bots`;
   const w = secrets!.wallet;
+  // connected: show where to send sats; the connect box only when there's no wallet (or on request)
+  $("#wallet-fund").hidden = !w.connected;
+  if (w.connected) $("#wallet-fund").innerHTML = `✓ Connected. <b>To fund it,</b> send sats from any Lightning wallet to <code>${esc(w.address || "the wallet's Lightning address")}</code> (the prize plus a few sats for fees).`;
+  if (!wantChange) $("#wallet-form").hidden = w.connected;
+  $("#wallet-change").hidden = !w.connected || wantChange;
   $("#wallet-line").innerHTML = w.connected ? `<b class="ok">connected</b>${w.alias ? ` (${esc(w.alias)})` : ""}${w.balance !== null ? ` · balance <b>${fmt(w.balance)} sats</b>` : ""}` : `<b class="bad">not connected</b> (you'll pay the winner by hand)`;
   // the final's winners and where to pay them
   $("#payouts").innerHTML = secrets!.payouts.length
@@ -208,4 +215,10 @@ $("#wallet-off").addEventListener("click", async () => {
   if (!confirm("Disconnect the game's wallet?")) return;
   await api("wallet", { url: "" });
   void loadSecrets();
+});
+
+$("#wallet-change").addEventListener("click", () => {
+  wantChange = true;
+  $("#wallet-form").hidden = false;
+  $("#wallet-change").hidden = true;
 });

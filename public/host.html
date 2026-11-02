@@ -24,7 +24,9 @@
         <details class="wallet-box" id="wallet-box">
           <summary>⚡ Game wallet: <span id="wallet-line">checking…</span></summary>
           <p class="small">Connect the game's own wallet with <b>Nostr Wallet Connect</b> (coinos.io, Alby Hub, LNbits…). Give the connection <b>pay</b> permission and fund it with the prize. When the Showdown ends, the game pays the winner's Lightning address itself.</p>
-          <form id="wallet-form" class="row"><input id="wallet-url" type="password" placeholder="nostr+walletconnect://…" autocomplete="off"><button class="btn primary">Connect</button><button type="button" class="btn ghost" id="wallet-off">Disconnect</button></form>
+          <p id="wallet-fund" class="wallet-fund" hidden></p>
+          <form id="wallet-form" class="row"><input id="wallet-url" type="text" placeholder="nostr+walletconnect://…" autocomplete="off" autocapitalize="off" spellcheck="false" data-lpignore="true"><button class="btn primary">Connect</button></form>
+          <p><button type="button" class="btn ghost small" id="wallet-change" hidden>Connect a different wallet</button> <button type="button" class="btn ghost small" id="wallet-off">Disconnect</button></p>
         </details>
         <div class="buttons">
           <button class="btn primary" id="start">▶ Start round</button>
