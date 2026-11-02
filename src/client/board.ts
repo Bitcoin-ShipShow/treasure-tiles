@@ -5,7 +5,7 @@
 import type { PubState } from "../shared/types.ts";
 import { dayMonthYear, offText } from "../shared/blocks.ts";
 import { Conn, loadConfig } from "./net.ts";
-import { $, clockText, countdown, Cove, miniBoard, upNext, esc, fmt, krakenOverlay, leaderboard, phaseLine, pirateConfetti, playerColor, roundLabel, secondsLeft, shipIcon, showPoints, verifySeal } from "./ui.ts";
+import { $, clockText, countdown, Cove, wheelsOffNow, miniBoard, upNext, esc, fmt, krakenOverlay, leaderboard, phaseLine, pirateConfetti, playerColor, roundLabel, secondsLeft, shipIcon, showPoints, verifySeal } from "./ui.ts";
 
 const cfg = await loadConfig();
 if (new URLSearchParams(location.search).has("transparent")) document.documentElement.classList.add("transparent");
@@ -99,7 +99,7 @@ function lobby(s: PubState) {
   const box = $("#lobby");
   box.hidden = s.phase !== "lobby" || !$("#home").hidden;
   if (box.hidden) return;
-  box.innerHTML = `<div class="gr-small">GET READY FOR</div><div class="gr-big">${esc(upNext(s).toUpperCase())}</div><p class="b-ready">Shoot the wall, then guess the <b>BLOCK HEIGHT</b>.</p>`;
+  box.innerHTML = `<div class="gr-small">GET READY FOR</div><div class="gr-big">${esc(upNext(s).toUpperCase())}</div>${wheelsOffNow(s) ? `<p class="b-wheels">🚲 No more date training wheels: just guess the <b>BLOCK HEIGHT</b>!</p>` : `<p class="b-ready">Shoot the wall, then guess the <b>BLOCK HEIGHT</b>.</p>`}`;
 }
 
 /** A round is over: the answer and the best guesses. After the last round: the winner. */

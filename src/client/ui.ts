@@ -990,3 +990,12 @@ export function guessVerdict(offBlocks: number) {
   if (days < 365 * 3) return "Ye were in the right ocean, at least!";
   return "Ye were lost at sea on that one!";
 }
+
+/** The dial shows the date of the chosen block only in round 1 ("training wheels"). */
+export function datesOn(s: PubState) {
+  return s.show.stage === "prelim" && s.show.round <= 1;
+}
+/** Round 2 is loaded and waiting: time to tell everyone the training wheels are off. */
+export function wheelsOffNow(s: PubState) {
+  return s.phase === "lobby" && s.show.stage === "prelim" && s.show.round === 2;
+}

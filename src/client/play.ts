@@ -8,7 +8,7 @@ import { dayMonthYear, heightToTime, monthYear, offText } from "../shared/blocks
 import { Conn, loadConfig, plain, SEAT, serverNow } from "./net.ts";
 import { SimplePool } from "nostr-tools/pool";
 import { extensionSigner, hasExtension, pendingConnect, restoreSigner, startNostrConnect, withTimeout, type Signer } from "./signer.ts";
-import { $, clockText, countdown, Cove, guessVerdict, ordinal, pirateCheer, pirateConfetti, upNext, esc, fmt, krakenOverlay, miniBoard, pirateShip, pirateSplat, playerColor, rankOf, roundLabel, secondsLeft, showPoints, toast } from "./ui.ts";
+import { $, clockText, countdown, Cove, datesOn, wheelsOffNow, guessVerdict, ordinal, pirateCheer, pirateConfetti, upNext, esc, fmt, krakenOverlay, miniBoard, pirateShip, pirateSplat, playerColor, rankOf, roundLabel, secondsLeft, showPoints, toast } from "./ui.ts";
 
 // ?reset starts over as a brand-new player: forget this browser's game key, name, intro and sign-in
 if (new URLSearchParams(location.search).has("reset")) {
@@ -506,7 +506,8 @@ function setDial(v: number, s = conn.state) {
   dialValue = Math.max(0, Math.min(max, Math.round(v)));
   range.value = String(dialValue);
   $("#dial-num").textContent = fmt(dialValue);
-  $("#dial-date").textContent = `≈ ${monthYear(heightToTime(dialValue))}`;
+  // the date under the number: training wheels, round 1 only
+  $("#dial-date").textContent = !s || datesOn(s) ? `≈ ${monthYear(heightToTime(dialValue))}` : "";
 }
 range.addEventListener("input", () => setDial(Number(range.value)));
 // − and +: a tap moves 1,000 blocks (about a week); hold to keep going, faster and faster
@@ -633,6 +634,7 @@ function render(s: PubState) {
   pirates(s);
   // a round is loaded but not started: tell everyone what's coming
   const ready = s.phase === "lobby";
+  if (!ready) $("#wheels-off").hidden = true;
   $("#get-ready").hidden = !ready;
   if (ready) {
     const finalist = s.show.finalists.includes(me);
@@ -640,9 +642,12 @@ function render(s: PubState) {
       ? `<p class="gr-place">${finalist ? "⚔️ Ye made the 3 Ship Showdown! The treasure be within reach!" : "Ye missed the Showdown, matey. Cheer on the captains!"}</p>`
       : "";
     const html = `<small>GET READY FOR</small><b>${esc(upNext(s).toUpperCase())}</b>${place}`;
+    // round 2: the dates come off the dial
+    $("#wheels-off").hidden = !wheelsOffNow(s);
     if ($("#get-ready").innerHTML !== html) $("#get-ready").innerHTML = html;
   }
   dial(s);
+  setDial(dialValue, s);
   result(s);
   claimBox(s);
   tick(s);
@@ -770,10 +775,32 @@ function lastCall(s: PubState) {
   }
 }
 
+/** The big round clock, and the score multiplier draining away (answer fast = more points). */
+function bigClock(s: PubState) {
+  const el = $("#big-clock");
+  const mine = (s.locked ?? []).includes(me);
+  const on = (s.phase === "open" || s.phase === "paused") && playing(s);
+  el.hidden = !on;
+  document.body.classList.toggle("in-round", on);
+  if (!on) return;
+  const now = serverNow();
+  const start = s.goAt || now;
+  const len = Math.max(1, s.deadline - start);
+  const share = Math.max(0, Math.min(1, (s.deadline - Math.max(now, start)) / len));
+  const mult = 0.25 + 0.75 * share; // the same speed factor the server scores with
+  const left = secondsLeft(s);
+  el.classList.toggle("urgent", left <= 10);
+  el.classList.toggle("done", mine);
+  if (!mine) el.dataset.mult = mult.toFixed(2);
+  const shown = mine ? Number(el.dataset.mult || mult) : mult;
+  el.innerHTML = `<b>${clockText(left)}</b><div class="bc-mult"><span style="width:${(shown * 100).toFixed(1)}%"></span></div><small>${mine ? "🔒 locked in at" : "score multiplier"} ×${shown.toFixed(2)}</small>`;
+}
+
 function tick(s: PubState) {
   const p = s.players[me];
   if (!p) return;
   lastCall(s);
+  bigClock(s);
   krakenOverlay($("#kraken"), s, me);
   dial(s); // the LOCK IN button wakes up the moment the countdown ends
   const left = secondsLeft(s);
