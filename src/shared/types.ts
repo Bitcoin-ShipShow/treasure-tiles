@@ -125,7 +125,7 @@ export const DEFAULT_SETTINGS: Settings = {
   prizeSplit: "winner",
   countdownSeconds: 3,
   tilesPerPlayer: 4,
-  preFallen: 0.12,
+  preFallen: 0,
   maxPoints: 100,
   zeroYears: 3,
 };
