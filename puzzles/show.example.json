@@ -1,0 +1,6 @@
+[
+  { "id": "pizza", "title": "Bitcoin Pizza Day", "height": 57043, "when": "2010-05-22T19:16:00Z", "event": "When Laszlo bought two pizzas for 10,000 BTC" },
+  { "id": "halving1", "title": "The First Halving", "height": 210000, "when": "2012-11-28T15:24:00Z", "event": "When the block reward first halved" },
+  { "id": "halving3", "title": "The Third Halving", "height": 630000, "when": "2020-05-11T19:23:00Z", "event": "When the block reward halved for the third time" },
+  { "id": "halving4", "title": "The Fourth Halving", "height": 840000, "when": "2024-04-20T00:09:00Z", "event": "When the block reward halved for the fourth time", "finalOnly": true }
+]

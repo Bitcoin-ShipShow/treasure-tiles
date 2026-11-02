@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Treasure Tiles preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="/brand/bimi-logo.svg">
+</head>
+<body class="preview-page">
+  <header class="play-head">
+    <div class="brand"><img class="brand-boat" src="/brand/shipshow-boat.png" alt=""><span>Preview</span></div>
+    <nav class="pv-tabs">
+      <a class="btn small" data-view="phone" href="?view=phone">📱 Phone</a>
+      <a class="btn small" data-view="desktop" href="?view=desktop">💻 Desktop</a>
+      <a class="btn small" data-view="board" href="?view=board">📺 Broadcast</a>
+      <a class="btn small" data-view="all" href="?view=all">All three</a>
+    </nav>
+  </header>
+  <main class="pv-main">
+    <p class="small muted pv-note">These are live, real pages. The phone and desktop previews are players of their own: join with a name to play from them.</p>
+    <div class="pv-row">
+      <figure class="pv pv-board"><figcaption>Broadcast (1920×1080)</figcaption><div class="pv-frame" data-w="1920" data-h="1080"><iframe src="/board" title="Broadcast"></iframe></div></figure>
+      <figure class="pv pv-desktop"><figcaption>Desktop player (1440×900)</figcaption><div class="pv-frame" data-w="1440" data-h="900"><iframe src="/play?seat=pvdesk" title="Desktop player"></iframe></div></figure>
+      <figure class="pv pv-phone"><figcaption>Phone player (390×844)</figcaption><div class="pv-frame phone-frame" data-w="390" data-h="844"><iframe src="/play?seat=pvphone" title="Phone player"></iframe></div></figure>
+    </div>
+  </main>
+  <script>
+    // Show the chosen view(s), each page at its real size scaled down to fit.
+    const view = new URLSearchParams(location.search).get("view") || "all";
+    document.body.dataset.view = view;
+    document.querySelector(`[data-view="${view}"]`)?.classList.add("primary");
+    function fit() {
+      for (const f of document.querySelectorAll(".pv-frame")) {
+        const w = +f.dataset.w, h = +f.dataset.h;
+        const avail = f.parentElement.clientWidth;
+        const maxH = window.innerHeight - 140;
+        const s = Math.min(avail / w, maxH / h, 1);
+        f.style.width = `${w * s}px`;
+        f.style.height = `${h * s}px`;
+        f.firstElementChild.style.width = `${w}px`;
+        f.firstElementChild.style.height = `${h}px`;
+        f.firstElementChild.style.transform = `scale(${s})`;
+      }
+    }
+    addEventListener("resize", fit);
+    fit();
+  </script>
+</body>
+</html>

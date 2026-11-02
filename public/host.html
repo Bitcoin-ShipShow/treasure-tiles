@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Treasure Tiles host</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="/brand/bimi-logo.svg">
+</head>
+<body class="host-page">
+  <header class="play-head"><div class="brand"><img class="brand-boat" src="/brand/shipshow-boat.png" alt=""><span>Host console</span></div><span id="msg"></span></header>
+  <main>
+    <section id="gate" class="card" hidden>
+      <h2>Host password</h2>
+      <form id="login" class="row"><input id="pw" type="password" placeholder="From the server's startup message"><button class="btn primary">Enter</button></form>
+    </section>
+    <div id="console" hidden>
+      <section class="card">
+        <div class="host-top"><h2 id="phase"></h2><div id="clock" class="clock"></div></div>
+        <div id="score-line"></div>
+        <div id="final-line" class="ok"></div>
+        <div id="payouts"></div>
+        <details class="wallet-box" id="wallet-box">
+          <summary>⚡ Game wallet: <span id="wallet-line">checking…</span></summary>
+          <p class="small">Connect the game's own wallet with <b>Nostr Wallet Connect</b> (coinos.io, Alby Hub, LNbits…). Give the connection <b>pay</b> permission and fund it with the prize. When the Showdown ends, the game pays the winner's Lightning address itself.</p>
+          <form id="wallet-form" class="row"><input id="wallet-url" type="password" placeholder="nostr+walletconnect://…" autocomplete="off"><button class="btn primary">Connect</button><button type="button" class="btn ghost" id="wallet-off">Disconnect</button></form>
+        </details>
+        <div class="buttons">
+          <button class="btn primary" id="start">▶ Start round</button>
+          <button class="btn" id="pause">⏸ Pause</button>
+                    <button class="btn" id="addtime">+30 s</button>
+          <button class="btn danger" id="end">End game</button>
+        </div>
+        <div class="buttons show-buttons">
+          <b>The show:</b>
+          <button class="btn primary" id="next-round" title="Load the next round: everyone sees 'Get ready'. Then press Start round.">⏭ Load next round</button>
+          <button class="btn" id="final-btn" title="The top 3 by total play the final">⚔️ Final: top 3</button>
+          <button class="btn ghost" id="new-show" title="Clear totals, back to round 1">New show</button>
+        </div>
+        <div class="buttons">
+          <select id="puzzle"></select><button class="btn" id="new">Load this puzzle (same round)</button>
+        </div>
+        <div class="buttons view-buttons">
+          <b>Look at:</b>
+          <a class="btn small" href="/board" target="_blank">📺 Broadcast</a>
+          <a class="btn small" href="/preview?view=phone" target="_blank">📱 Phone player</a>
+          <a class="btn small" href="/preview?view=desktop" target="_blank">💻 Desktop player</a>
+          <a class="btn small" href="/preview?view=all" target="_blank">All three</a>
+          <a class="btn small" href="/lab" target="_blank">🧪 Test lab</a>
+        </div>
+        <div id="links" class="links"></div>
+        <div class="small muted" id="conns"></div>
+      </section>
+
+      <div class="host-cols">
+        <div>
+          <section class="card">
+            <div class="row"><h3>The answer</h3><button class="btn small" id="peek">Show / hide</button></div>
+            <div id="answer" class="blur"></div>
+          </section>
+          <section class="card"><h3>Pirates</h3><div id="roster"></div>
+            <div class="buttons"><button class="btn small" id="bots-add">+6 practice bots</button><button class="btn small" id="bots-clear">Remove bots</button></div>
+          </section>
+          <section class="card"><h3>Guesses</h3><div id="hfeed"></div></section>
+        </div>
+        <div>
+          <section class="card">
+            <h3>Rules</h3>
+            <form id="settings" class="settings">
+              <label>Title <input name="title"></label>
+              <label>Tagline <input name="tagline"></label>
+              <label>Round length (seconds) <input name="gameSeconds" type="number" min="30" max="1200"></label>
+              <label>Rock slabs on the picture <input name="tiles" type="number" min="6" max="120"></label>
+              <label>Cannon reload (seconds) <input name="reloadSeconds" type="number" min="0" max="30"></label>
+              <label>Private peek after a hit (seconds) <input name="peekSeconds" type="number" min="0" max="30"></label>
+              <label>Wrong-guess wait (seconds) <input name="lockoutSeconds" type="number" min="0" max="30"></label>
+              <label>A letter appears every (s, 0 = off) <input name="letterEverySeconds" type="number" min="0" max="300"></label>
+              <label>Letters shown from the start <input name="freeLetters" maxlength="26"></label>
+              <label>A clue every (s, 0 = off) <input name="clueEverySeconds" type="number" min="0" max="600"></label>
+              <label>Letter target rests after a hit (seconds, 0 = never) <input name="targetCooldownSeconds" type="number" min="0" max="300"></label>
+              <label>Kraken wakes after (seconds) <input name="krakenAfterSeconds" type="number" min="5" max="600"></label>
+              <label>Kraken in the first … rounds (0 = never) <input name="krakenRounds" type="number" min="0" max="20"></label>
+              <label>Kraken needs at least … players <input name="krakenMinPlayers" type="number" min="4" max="1000"></label>
+              <label>Points per slab hit <input name="hitPoints" type="number" min="0" max="50"></label>
+              <label>Countdown before each round (seconds) <input name="countdownSeconds" type="number" min="0" max="10"></label>
+              <label>Final length (seconds) <input name="finalSeconds" type="number" min="20" max="1200"></label>
+              <label>Bonus for solving <input name="solveBonus" type="number" min="0" max="1000"></label>
+              <label>Treasure (practice sats) <input name="prizePool" type="number" min="0"></label>
+              <label>Treasure split <select name="prizeSplit"><option value="points">By points</option><option value="winner">Winner takes all</option></select></label>
+              <button class="btn primary wide">Save rules</button>
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="/build/host.js"></script>
+</body>
+</html>

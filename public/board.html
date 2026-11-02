@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Treasure Tiles board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="/brand/bimi-logo.svg">
+</head>
+<body class="board-page booting">
+  <div id="cove" class="cove-full"></div>
+  <!-- no side panel: a slim bar on top, the standings top-right, the join code bottom-left -->
+  <header class="bb-top">
+    <div class="bb-round" id="round"></div>
+    <div class="bb-clock" id="clock"></div>
+    <div class="bb-locked" id="locked"></div>
+    <div hidden><span id="title"></span><span id="tagline"></span><span id="pool"></span><span id="phase"></span><span id="seal"></span><a id="join-btn"></a></div>
+  </header>
+  <div id="board" class="mini-lb bb-standings"></div>
+  <div class="bb-this" id="bb-this">
+    <div class="bt-text">GUESS THE<b>BLOCK HEIGHT</b>when <em>THIS</em> happened</div>
+    <svg class="bt-arrow" viewBox="0 0 160 120" aria-hidden="true"><path d="M8 92 C 50 100, 100 80, 132 40" /><path class="bt-head" d="M104 38 L136 34 L128 66" /></svg>
+  </div>
+  <div class="bb-join"><img id="qr" alt=""><div><b>JOIN THE FLEET</b><span id="join-url"></span></div></div>
+  <section id="home" class="home" hidden>
+    <div class="home-inner">
+      <h1 class="gt-title"><span class="gt-btc">Bitcoin</span> <span class="gt-ship">Shipshow</span> <span class="gt-gt">Gametime!</span></h1>
+      <div class="gt-month">This month's game:</div>
+      <img class="gt-logo" src="/brand/treasure-tiles-logo.webp" alt="Treasure Tiles">
+      <div class="gt-prize">🏆 The champion wins <b><span class="prize-sats">10,000</span> sats</b> + the Championship Belt!</div>
+      <div class="gt-scan">Scan the code to join the fleet<small>(or go to the link below)</small></div>
+      <div class="home-qr"><img id="home-qr" alt="QR code to join"></div>
+      <div class="home-url" id="home-url"></div>
+      <div class="home-fleet" id="home-fleet"></div>
+    </div>
+    <div id="home-point" class="home-point" hidden>
+      <div class="hp-q">What's the point of the game?</div>
+      <div class="hp-a">Guess the right <b>block height</b> based on the <b>secret image</b>!</div>
+    </div>
+    <div id="home-ships" class="home-ships">
+    </div>
+  </section>
+  <div id="lobby" class="lobby-box" hidden></div>
+  <div id="final" class="final-overlay" hidden></div>
+  <div id="kraken" class="kraken-overlay" hidden></div>
+  <div id="countdown" class="countdown board-countdown" hidden></div>
+  <script type="module" src="/build/board.js"></script>
+</body>
+</html>

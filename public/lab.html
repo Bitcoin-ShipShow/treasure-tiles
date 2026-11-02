@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Treasure Tiles test lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="/brand/bimi-logo.svg">
+</head>
+<body class="lab-page">
+  <header class="play-head"><div class="brand"><img class="brand-boat" src="/brand/shipshow-boat.png" alt=""><span>Test lab</span></div><span id="msg"></span></header>
+  <main>
+    <section id="gate" class="card" hidden>
+      <h2>Host password</h2>
+      <p class="small muted">It's in the server's startup message (and in data/host-token.txt).</p>
+      <form id="login" class="row"><input id="pw" type="password"><button class="btn primary">Enter</button></form>
+    </section>
+    <div id="lab" hidden>
+      <section class="lab-bar">
+        <div class="lab-row">
+          <select id="puzzle"></select><button class="btn small" id="new">Load puzzle</button>
+          <button class="btn small primary" id="start">⚓ Start</button>
+          <button class="btn small" id="next-round">⏭ Load next round</button>
+          <button class="btn small" id="final-btn">⚔️ Final: top 3</button>
+          <button class="btn small ghost" id="new-show">New show</button>
+          <button class="btn small" id="pause">⏸ Pause</button>
+          <button class="btn small" id="addtime">+30 s</button>
+          <button class="btn small danger" id="end">End game</button>
+          <span class="sep"></span>
+          <button class="btn small" id="bots-add">+3 bots</button>
+          <button class="btn small" id="bots-clear">No bots</button>
+          <span class="muted small"><span id="bots">0</span> bots · <span id="players"></span></span>
+          <button class="btn small ghost" id="reset" title="Remove every player and bot, and start the phones fresh">Clear all players</button>
+        </div>
+        <div class="lab-row"><b id="status"></b></div>
+        <div class="lab-row answer-row">
+          <span class="muted small">Answer (tap a word to type it into the ticked phone):</span>
+          <span id="answer-words"></span>
+        </div>
+        <div class="small muted">Also accepted: <span id="aka"></span></div>
+      </section>
+      <div class="lab-grid">
+        <div class="lab-board">
+          <div class="seat-label">Board (what the stream sees)</div>
+          <div id="board-box" class="board-box"><iframe id="board-frame" src="/board" title="Board"></iframe></div>
+          <ol class="small muted lab-tips">
+            <li>Load a puzzle and press Start. Each phone is a real, separate pirate.</li>
+            <li>On any phone, press on the picture, pull back like a slingshot (any direction) and let go to fire its cannon. A hit shows "👁" on the board while that phone peeks.</li>
+            <li>Tick a phone, tap answer words above to type them into it, and press Guess on the phone.</li>
+            <li>"+3 bots" adds pretend pirates who fire (badly) and guess.</li>
+          </ol>
+        </div>
+        <div id="phones" class="phones"></div>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="/build/lab.js"></script>
+</body>
+</html>

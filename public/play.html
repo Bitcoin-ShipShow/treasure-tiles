@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#061726">
+  <title>Treasure Tiles</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="/brand/bimi-logo.svg">
+</head>
+<body class="play-page v2" data-screen="loading">
+  <section data-show="loading"><p class="muted center">Hoisting the sails…</p></section>
+
+  <section data-show="join" class="card join-card v2-join">
+    <img class="gt-logo v2-logo" src="/brand/treasure-tiles-logo.webp" alt="Treasure Tiles">
+    <h1>Join the fleet</h1>
+    <p class="si-prize">🏆 The champion wins <b><span class="prize-sats">10,000</span> sats</b>!</p>
+
+    <div class="si-nostr">
+      <button type="button" class="si-btn si-purple" id="si-ext" hidden>🟣 Sign in with Nostr</button>
+      <button type="button" class="si-btn si-purple" id="si-app">🟣 Sign in with a Nostr signer app</button>
+      <p class="si-small">Your Nostr name and picture go on your ship, and you can win Nostr badges.</p>
+      <div id="si-connect" class="si-connect" hidden>
+        <p>Approve in your signer app (Amber, Primal, nsec.app…):</p>
+        <a id="si-open" class="si-btn si-purple" href="#">Open my signer app</a>
+        <img id="si-qr" alt="Scan with your signer app">
+        <button type="button" class="si-link" id="si-cancel">cancel</button>
+      </div>
+      <p id="si-msg" class="si-msg"></p>
+    </div>
+
+    <div class="si-or"><span>or</span></div>
+
+    <form id="join-form" class="si-guest">
+      <input id="name" maxlength="24" placeholder="Your pirate name" autocomplete="nickname" enterkeyhint="go">
+      <div class="si-label">Pick your pirate:</div>
+      <div id="avatars" class="si-avatars"></div>
+      <button class="si-btn si-gold">Come aboard</button>
+    </form>
+  </section>
+
+  <section class="v2-intro" data-show="intro">
+    <div class="intro-step" data-step="0">
+      <h2>This is your ship.</h2>
+      <p>Shoot its cannon by <b>dragging down and releasing</b>.</p>
+    </div>
+    <div class="intro-step" data-step="1" hidden>
+      <h2>Shoot the wall</h2>
+      <p>…to reveal the <b>secret image</b>.</p>
+    </div>
+    <div class="intro-step" data-step="2" hidden>
+      <h2>Your job:</h2>
+      <p>use the slider to guess the <b>BITCOIN BLOCK HEIGHT</b> when the event in the secret image happened.</p>
+    </div>
+    <div class="intro-step" data-step="3" hidden>
+      <h2>Points!</h2>
+      <p>You get more points for answering <b>fast</b> and for getting <b>close</b> to the right block height.</p>
+      <p class="intro-small">3 rounds, then the top 3 battle in the <b>3 Ship Showdown</b>.</p>
+      <p class="si-prize">🏆 The champion wins <b><span class="prize-sats">10,000</span> sats</b> and the Championship Belt!</p>
+    </div>
+    <div id="intro-pond" class="intro-pond"></div>
+    <p id="intro-say" class="intro-say">Hit the target!</p>
+    <div id="intro-dial" class="intro-dial" hidden>
+      <div class="dial-num"><em class="dial-eq">BLOCK HEIGHT =</em> <span id="intro-num">0</span><small id="intro-date"></small></div>
+      <input id="intro-range" type="range" min="0" max="1000000" step="1" aria-label="Block height">
+      <button type="button" id="intro-lock" class="dial-lock">LOCK IN</button>
+    </div>
+    <button type="button" id="intro-next" class="intro-next" hidden>NEXT</button>
+  </section>
+
+  <div class="v2-play" data-show="play">
+    <div id="cove-wrap">
+      <div id="cove-box"></div>
+      <div id="hud" class="v2-hud"></div>
+      <div id="mini-lb" class="mini-lb"></div>
+      <div id="countdown" class="countdown" hidden></div>
+      <div id="get-ready" class="get-ready" hidden></div>
+      <div id="last-call" class="last-call" hidden></div>
+      <button type="button" class="pirate-btn" id="pirate-btn" hidden>🏴‍☠️ LAUNCH PIRATE</button>
+      <div id="shot-say" class="v2-say"></div>
+      <div id="kraken" class="kraken-overlay" hidden></div>
+    </div>
+
+    <section id="dial" class="v2-dial">
+      <div class="dial-q">Look at the <b>secret image</b>. When did it happen?<br>What was the <b>BLOCK HEIGHT</b> at that moment?</div>
+      <div class="dial-num"><em class="dial-eq">BLOCK HEIGHT =</em> <span id="dial-num">0</span><small id="dial-date"></small></div>
+      <input id="dial-range" type="range" min="0" max="1000000" step="1" aria-label="Block height">
+      <div class="dial-row">
+        <button type="button" class="dial-step" data-step="-1000" aria-label="Lower">−</button>
+        <button type="button" id="lock" class="dial-lock">LOCK IN</button>
+        <button type="button" class="dial-step" data-step="1000" aria-label="Higher">+</button>
+      </div>
+      <div id="dial-msg" class="dial-msg"></div>
+    </section>
+
+    <section id="result" class="v2-result" hidden></section>
+    <div id="splash" class="round-splash" hidden></div>
+
+    <section id="claim" class="card claim-card" hidden>
+      <img class="rs-belt" src="/badges/belt.png" alt="">
+      <h2>🏆 YOU ARE THE CHAMPION! 🏆</h2>
+      <p class="claim-belt">You won the <b>Bitcoin Ship Show Hardcore Championship Belt</b>!</p>
+      <p id="claim-what"></p>
+      <div id="claim-ways">
+        <button type="button" class="si-btn si-gold" id="claim-qr">⚡ Scan to receive with my wallet</button>
+        <div id="claim-qr-box" class="claim-qr" hidden>
+          <p><span class="mouse-only">Scan this with the Lightning wallet app on your phone</span><span class="touch-only">Scan with your Lightning wallet app</span> (Phoenix, Wallet of Satoshi, Blink…):</p>
+          <img id="claim-qr-img" alt="Scan to receive your prize">
+          <a id="claim-qr-open" class="si-btn si-purple"><span class="touch-only">Open in my wallet on this phone</span><span class="mouse-only">Open in a wallet on this computer</span></a>
+        </div>
+        <div class="si-or"><span>or send it to my Lightning address</span></div>
+        <form id="claim-form" class="row"><input id="claim-address" type="email" inputmode="email" autocomplete="email" placeholder="you@walletofsatoshi.com" maxlength="120"><button class="btn primary">Send</button></form>
+      </div>
+      <p id="claim-msg" class="small"></p>
+    </section>
+  </div>
+  <script type="module" src="/build/play.js"></script>
+</body>
+</html>

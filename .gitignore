@@ -1,0 +1,11 @@
+node_modules/
+public/build/
+data/
+data-*/
+test-results/
+.env
+art-src/
+# the show's rounds and pictures are private (they'd give the answers away): deployed to the server separately
+puzzles/show.json
+puzzles/images/*
+!puzzles/images/practice.jpg
