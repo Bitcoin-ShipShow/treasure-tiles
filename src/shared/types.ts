@@ -264,6 +264,8 @@ export interface PubState {
   hint?: string;
   /** Winners who have sent the host their Lightning address (the addresses stay private). */
   claimed?: string[];
+  /** The game's wallet pays the winner automatically (else the host pays by hand). */
+  autoPay?: boolean;
   /** Winners whose prize the game's wallet has paid. */
   paid?: string[];
   /** Nostr badges won this show, by player (only players signed in with Nostr). */

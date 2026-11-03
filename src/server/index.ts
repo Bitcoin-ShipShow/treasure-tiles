@@ -76,6 +76,13 @@ game.onFinish = (f) => {
 
 // The game's own wallet pays the winner as soon as they send their Lightning address.
 const wallet = new Wallet(DATA_DIR);
+// keep the public "pays automatically?" flag in step with the wallet
+setInterval(() => {
+  if (game.autoPay !== wallet.connected) {
+    game.autoPay = wallet.connected;
+    publishState();
+  }
+}, 2000).unref();
 async function payOut(pk: string) {
   const p = game.s.show.payouts?.[pk];
   // scan-to-receive prizes are paid when the winner's wallet asks (see /lnurlw)

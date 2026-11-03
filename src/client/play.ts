@@ -568,11 +568,19 @@ function claimBox(s: PubState) {
   const sent = (s.claimed ?? []).includes(me);
   const paid = (s.paid ?? []).includes(me);
   $("#claim").classList.toggle("sent", sent);
+  const auto = !!s.autoPay;
+  // no game wallet: the only way is a Lightning address, and the host pays by hand
+  $("#claim-auto").hidden = !auto;
+  $("#claim-noaddr").hidden = sent || paid;
   const what = paid
     ? `⚡ <b>Paid!</b> ${fmt(mine.share)} sats are in your wallet. Fair winds, captain!`
     : sent
-      ? `⚡ Sending your <b>${fmt(mine.share)} sats</b>… (if your wallet doesn't show it soon, the host will sort it out)`
-      : `Your prize: <b>${fmt(mine.share)} sats</b>. Scan it with your Lightning wallet, or enter your Lightning address, and the game pays you straight away.`;
+      ? auto
+        ? `⚡ Sending your <b>${fmt(mine.share)} sats</b>… (if your wallet doesn't show it soon, the host will sort it out)`
+        : `✓ The host has your Lightning address and will send your <b>${fmt(mine.share)} sats</b> after the show.`
+      : auto
+        ? `Your prize: <b>${fmt(mine.share)} sats</b>. Scan it with your Lightning wallet, or enter your Lightning address, and the game pays you straight away.`
+        : `Your prize: <b>${fmt(mine.share)} sats</b>. Enter your <b>Lightning address</b> below and the host will send it to you.`;
   const html = what + (paid || sent ? brag(`🏆 I won the Bitcoin Ship Show Hardcore Championship Belt! Took the Treasure Tiles 3 Ship Showdown and ${fmt(mine.share)} sats. #bitcoinshipshow`) : "");
   if ($("#claim-what").dataset.html !== html) {
     $("#claim-what").dataset.html = html;

@@ -1078,3 +1078,5 @@ body.board-page[data-phase="open"] .bb-this, body.board-page[data-phase="paused"
 .b-wheels b { color: #111; }
 /* during a round the clock takes the bottom-left; the round slate moves to the bottom-right */
 body.in-round .v2-hud { left: auto; right: 8px; transform: none; }
+.claim-noaddr { margin: 10px 0 0; font: 700 14px/1.4 Arial, sans-serif; color: #cfe0ee; background: rgba(255,255,255,.06); border-radius: 8px; padding: 8px 10px; }
+.claim-noaddr b { color: #ffd23f; }

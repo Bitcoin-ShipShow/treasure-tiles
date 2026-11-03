@@ -105,6 +105,7 @@
       <p class="claim-belt">You won the <b>Bitcoin Ship Show Hardcore Championship Belt</b>!</p>
       <p id="claim-what"></p>
       <div id="claim-ways">
+        <div id="claim-auto">
         <button type="button" class="si-btn si-gold" id="claim-qr">⚡ Scan to receive with my wallet</button>
         <div id="claim-qr-box" class="claim-qr" hidden>
           <p><span class="mouse-only">Scan this with the Lightning wallet app on your phone</span><span class="touch-only">Scan with your Lightning wallet app</span> (Phoenix, Wallet of Satoshi, Blink…):</p>
@@ -112,9 +113,11 @@
           <a id="claim-qr-open" class="si-btn si-purple"><span class="touch-only">Open in my wallet on this phone</span><span class="mouse-only">Open in a wallet on this computer</span></a>
         </div>
         <div class="si-or"><span>or send it to my Lightning address</span></div>
+        </div>
         <form id="claim-form" class="row"><input id="claim-address" type="email" inputmode="email" autocomplete="email" placeholder="you@walletofsatoshi.com" maxlength="120"><button class="btn primary">Send</button></form>
       </div>
       <p id="claim-msg" class="small"></p>
+      <p id="claim-noaddr" class="claim-noaddr" hidden>No Lightning address? Post a note in the chat with the secret words <b>“much pirate”</b> and the host will sort out your prize.</p>
     </section>
   </div>
   <script type="module" src="/build/play.js"></script>

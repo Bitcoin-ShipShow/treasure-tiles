@@ -124,6 +124,8 @@ export class Game {
   readonly now: () => number;
   private readonly random: () => number;
   readonly puzzles: Puzzle[];
+  /** Is the game's own wallet connected (pays the winner automatically)? Set by the server. */
+  autoPay = false;
   /** The current Bitcoin block height (the server refreshes it from a block explorer). */
   tipHeight = timeToHeight(Date.now());
   private recutTimer: ReturnType<typeof setTimeout> | null = null;
@@ -1027,6 +1029,7 @@ export class Game {
       targetBackAt: s.targetBackAt,
       pirates: s.pirates,
       ...(this.puzzle.hint ? { hint: this.puzzle.hint } : {}),
+      autoPay: this.autoPay,
       claimed: Object.entries(s.show.payouts ?? {}).filter(([, p]) => !p.token || p.status !== "waiting").map(([pk]) => pk),
       paid: Object.entries(s.show.payouts ?? {}).filter(([, p]) => p.status === "paid").map(([pk]) => pk),
       badges: s.show.badges ?? {},
